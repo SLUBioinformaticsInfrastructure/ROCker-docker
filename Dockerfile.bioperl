@@ -1,4 +1,6 @@
 FROM bioperl/bioperl
+FROM ruby:2.5
+COPY --from=0 / /
 
 WORKDIR /home/rocker
 COPY ./check_bioperl.pl /home/rocker
