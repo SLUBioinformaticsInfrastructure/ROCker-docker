@@ -41,6 +41,39 @@ WORKDIR /home/rocker/Grinder-0.5.4
 RUN perl Makefile.PL
 RUN make
 RUN make install
-CMD ["grinder", "--help"]
 
+# Install R
+# RUN apt-get update && apt-get install -y r-base
+
+# https://www.r-bloggers.com/how-to-install-r-ubuntu-16-04-xenial/
+RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | tee -a /etc/apt/sources.list
+RUN gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
+RUN gpg -a --export E084DAB9 | apt-key add -
+RUN apt-get update
+RUN apt-get install r-base r-base-dev
+
+# Step 21/24 : RUN apt-get install r-base r-base-dev
+#  ---> Running in 921fa02dd6f5
+# Reading package lists...
+# Building dependency tree...
+# Reading state information...
+# Some packages could not be installed. This may mean that you have
+# requested an impossible situation or if you are using the unstable
+# distribution that some required packages have not yet been created
+# or been moved out of Incoming.
+# The following information may help to resolve the situation:
+#
+# The following packages have unmet dependencies:
+#  r-base : Depends: r-base-core (>= 3.4.4-1xenial0) but it is not going to be installed
+#           Depends: r-recommended (= 3.4.4-1xenial0) but it is not going to be installed
+#           Recommends: r-base-html but it is not going to be installed
+#  r-base-dev : Depends: r-base-core (>= 3.4.4-1xenial0) but it is not going to be installed
+# E: Unable to correct problems, you have held broken packages.
+# The command '/bin/sh -c apt-get install r-base r-base-dev' returned a non-zero code: 100
+
+
+# Install ROCker using RubyGems:
+RUN gem install bio-rocker
+
+CMD ["grinder", "--help"]
 CMD ["perl", "/home/rocker/check_bioperl.pl"]
