@@ -1,0 +1,22 @@
+FROM bioperl/bioperl
+
+WORKDIR /home/rocker
+COPY ./check_bioperl.pl /home/rocker
+
+RUN cpanm \
+	Metadata::Base \
+	Getopt::Euclid \
+	List::Util \
+	Math::Random::MT \
+	inc::Module::Install
+
+# Download GRINDER
+WORKDIR /home/rocker
+RUN curl -L https://sourceforge.net/projects/biogrinder/files/latest/download > ./Grinder-0.5.4.tar.gz && tar -xvzf Grinder-0.5.4.tar.gz
+WORKDIR /home/rocker/Grinder-0.5.4
+RUN perl Makefile.PL
+RUN make
+RUN make install
+CMD ["grinder", "--help"]
+
+CMD ["perl", "/home/rocker/check_bioperl.pl"]
