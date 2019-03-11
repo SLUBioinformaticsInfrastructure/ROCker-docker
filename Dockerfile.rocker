@@ -65,4 +65,6 @@ RUN tar -xvzf muscle3.8.31_i86linux64.tar.gz
 RUN mv muscle3.8.31_i86linux64 /usr/local/bin
 
 # ... And now, we can make a baby dinosaur
-RUN gem install bio-rocker
+WORKDIR /home/rocker/
+COPY ./rocker .
+#RUN gem install bio-rocker
