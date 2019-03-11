@@ -73,3 +73,5 @@ WORKDIR rocker_exec
 COPY ./rocker .
 ENV PATH /home/rocker/rocker_exec/bin:$PATH
 #RUN gem install bio-rocker
+
+COPY ./${dockerfile_build_files}/test.py /home/rocker
