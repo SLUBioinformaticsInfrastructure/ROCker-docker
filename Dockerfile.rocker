@@ -66,5 +66,8 @@ RUN mv muscle3.8.31_i86linux64 /usr/local/bin
 
 # ... And now, we can make a baby dinosaur
 WORKDIR /home/rocker/
+RUN mkdir -p rocker_exec
+WORKDIR rocker_exec
 COPY ./rocker .
+ENV PATH /home/rocker/rocker_exec/bin:$PATH
 #RUN gem install bio-rocker
