@@ -1,6 +1,8 @@
 FROM ubuntu:16.04
 
-COPY test.sh .
+ARG dockerfile_build_files=dockerfile_build_files
+
+COPY ${dockerfile_build_files}/test.sh .
 
 RUN apt-get update
 RUN apt-get -y upgrade
@@ -21,7 +23,7 @@ RUN apt-get -y install libcairo2-dev
 # required to install R package openssl
 RUN apt-get -y install libssl-dev
 # required to install R package rgl
-COPY ./keyboard /etc/default/keyboard
+COPY ./${dockerfile_build_files}/keyboard /etc/default/keyboard
 RUN apt-get -y install xorg
 RUN apt-get -y install libx11-dev
 RUN apt-get -y install libglu1-mesa-dev
