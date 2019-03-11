@@ -1,0 +1,52 @@
+FROM ubuntu:16.04
+
+COPY test.sh .
+
+RUN apt-get update
+RUN apt-get -y upgrade
+RUN apt-get -y install wget sudo
+# This is to install add-apt-repository
+RUN apt-get -y install software-properties-common
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+RUN add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'
+RUN apt-get -y install r-base
+# required to install R package git2r
+RUN apt-get -y install libssl-dev
+RUN apt-get -y install libgit2-dev
+# required to install R package curl
+RUN apt-get -y install libxml2-dev
+# required to install R package gdtools, httr
+RUN apt-get -y install libcurl4-openssl-dev
+RUN apt-get -y install libcairo2-dev
+# required to install R package openssl
+RUN apt-get -y install libssl-dev
+# required to install R package rgl
+# RUN export DEBIAN_FRONTEND=noninteractive
+# RUN echo "1" > xorg.int
+# RUN apt-get -yq install xorg < xorg.int
+COPY ./keyboard /etc/default/keyboard
+RUN apt-get -y install xorg
+RUN apt-get -y install libx11-dev
+RUN apt-get -y install libglu1-mesa-dev
+RUN apt-get -y install libfreetype6-dev
+
+RUN R -e "install.packages('pROC',repos='http://cran.rstudio.com/'); warnings()"
+
+# install perl shit
+RUN apt-get install curl
+RUN curl -L http://cpanmin.us | perl - App::cpanminus
+# RUN cpanm --force \
+# 	Metadata::Base \
+# 	Getopt::Euclid \
+# 	Math::Random::MT \
+# 	inc::Module::Install
+
+RUN apt-get -y install libgd-dev
+RUN cpanm GD
+
+WORKDIR /home/rocker/
+RUN curl -L https://sourceforge.net/projects/biogrinder/files/latest/download > ./Grinder-0.5.4.tar.gz && tar -xvzf Grinder-0.5.4.tar.gz
+WORKDIR /home/rocker/Grinder-0.5.4
+RUN perl Makefile.PL
+RUN make
+RUN make install
