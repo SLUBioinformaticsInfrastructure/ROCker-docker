@@ -64,7 +64,8 @@ RUN mv diamond /usr/local/bin
 
 RUN curl -O http://www.drive5.com/muscle/downloads3.8.31/muscle3.8.31_i86linux64.tar.gz
 RUN tar -xvzf muscle3.8.31_i86linux64.tar.gz
-RUN mv muscle3.8.31_i86linux64 /usr/local/bin
+RUN mv muscle3.8.31_i86linux64 muscle 
+RUN mv muscle /usr/local/bin
 
 # ... And now, we can make a baby dinosaur
 WORKDIR /home/rocker/
